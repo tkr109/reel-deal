@@ -1,0 +1,37 @@
+.profile-head {
+    transform: translateY(5rem)
+  }
+  
+  .cover {
+    background-image: url(https://images.unsplash.com/photo-1530305408560-82d13781b33a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80);
+    background-size: cover;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .cover img{
+    height: 12rem;
+    width: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .prof-body {
+    background: #654ea3;
+    background: linear-gradient(to right, #e96443, #904e95);
+    min-height: 100vh;
+    overflow:hidden;
+    background: linear-gradient(to right, rgb(4, 21, 45), #363434);
+  }
+
+  .pff{
+    margin-top: 20px;
+  }
+  
+  .item {
+    display: flex;
+    flex-wrap: wrap;  
+    min-width: 70px;
+  }

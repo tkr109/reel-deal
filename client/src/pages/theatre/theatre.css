@@ -1,0 +1,110 @@
+.date-input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin: 5px 0;
+  }
+  
+  .date-label {
+    font-weight: bold;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  .glass-effect{
+    display: flex;
+    padding-top: 100px;
+    justify-content: center;
+    align-items: center;
+    height: 700px;
+    width: 700px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    border-radius: 1rem;
+    margin-top: 100px;
+  }
+  
+  .th{
+    margin-left: 10px;
+    margin-right:10px ;
+  }
+
+  .theatres{
+    color: white;
+  }
+
+  .moviename-th{
+    border: 1px black solid;
+    border-radius: 5px;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: rgb(72, 75, 75);
+  }
+
+  .timing-link{
+    text-decoration: none;
+    color: rgb(237, 235, 235);
+    margin-right: 20px;
+    border-radius: 5px;
+    border: 1px solid rgb(255, 255, 255);
+    padding: 3px;
+  }
+
+.text-bold{
+  border: 2px solid black;
+  margin-top: 20px;
+  margin-left: 10px;
+  width: 130px;
+  height: 40px;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 25px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+   box-shadow:inset 2px 2px 2px 0px rgba(255,255,255,.5),
+   7px 7px 20px 0px rgba(0,0,0,.1),
+   4px 4px 5px 0px rgba(0,0,0,.1);
+  outline: none;
+  padding-left: 25px;
+}
+
+
+.text-bold:before,
+.text-bold:after {
+  position: absolute;
+  content: "";
+  height: 0%;
+  width: 1px;
+ box-shadow:
+   -1px -1px 20px 0px rgba(255,255,255,1),
+   -4px -4px 5px 0px rgba(255,255,255,1),
+   7px 7px 20px 0px rgba(0,0,0,.4),
+   4px 4px 5px 0px rgba(0,0,0,.3);
+}
+.text-bold:before {
+  right: 0;
+  top: 0;
+  transition: all 500ms ease;
+}
+.text-bold:after {
+  left: 0;
+  bottom: 0;
+  transition: all 500ms ease;
+}
+.text-bold:hover{
+  background: transparent;
+  color: #76aef1;
+  box-shadow: none;
+}
+.text-bold:hover:before {
+  transition: all 500ms ease;
+  height: 100%;
+}
+.text-bold:hover:after {
+  transition: all 500ms ease;
+  height: 100%;
+}
