@@ -41,7 +41,7 @@ function Register() {
           <Form.Item name="name">
             <div className="login-field">
               <div className="fas fa-user" />
-              <Input placeholder="Full Name" />
+              <Input placeholder="Full Name" name="fullName"/>
             </div>
           </Form.Item>
           <Row gutter={16}>
@@ -50,7 +50,7 @@ function Register() {
               <Form.Item name="phoneNumber">
                 <div className="login-field">
                   <div className="fas fa-phone" />
-                  <Input type="tel" placeholder="Phone Number"/>
+                  <Input type="tel" placeholder="Phone Number" name="phoneNumber"/>
                 </div>
               </Form.Item>
             </Col>
@@ -59,23 +59,23 @@ function Register() {
               <Form.Item name="city">
                 <div className="login-field">
                   <div className="fas fa-building" />
-                  <Input placeholder="City"/>
+                  <Input placeholder="City" name="city"/>
                 </div>
               </Form.Item>
             </Col>
           </Row>
           {/* label={<label style={{ color: "White" }}>Email</label>} */}
-          <Form.Item name="email" rules={[
+          <Form.Item rules={[
            { required: true,
             message: "Please enter your email",
           },
           {
             type:"email",message:"Please Enter a valid email"
           }
-        ]}>
+        ]} name="email">
             <div className="login-field">
               <div className="fas fa-envelope" />
-              <Input type="email" placeholder="Email " />
+              <Input type="email" placeholder="Email "  name="email" />
             </div>
           </Form.Item>
           {/* label={<label style={{ color: "White" }}>Password</label>} */}
@@ -137,7 +137,7 @@ function Register() {
 >
   <div className="login-field">
     <div className="fas fa-lock" />
-    <Input type="password" placeholder="Password" />
+    <Input type="password" name="password" placeholder="Password" />
   </div>
 </Form.Item>
 
