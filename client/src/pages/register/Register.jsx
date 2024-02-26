@@ -9,7 +9,7 @@ import "../Login/login.css"; // Import the CSS file with your styles
 function Register() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const [errorMsg,setErrorMsg]=useState("")
   const submitHandler = async (values) => {
     try {
       console.log(values);
@@ -32,9 +32,9 @@ function Register() {
   }, [navigate]);
 
   return (
-    <div className="login-container login-body" style={{ backgroundImage: `url("https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg")` }}>
+    <div className="login-container login-body " style={{ backgroundImage: `url("https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg")` }}>
       
-      <div className="login-form">
+      <div className="login-form" style={{maxWidth:'590px'}}>
         <div className="login-text">Register</div>
         <Form layout="vertical" onFinish={submitHandler} autoComplete="off">
         {/* label={<label style={{ color: "White" }}>Name</label>} */}
@@ -95,7 +95,7 @@ function Register() {
         const hasWhitespace = /\s/.test(value);
 
         let errorMessage = '';
-        console.log(value)
+        console.log(value);
 
         if(value.length<8){
           errorMessage+='Password must be at least 8 characters!';
@@ -125,9 +125,11 @@ function Register() {
         }
 
         if (errorMessage) {
-          return Promise.reject(errorMessage.trim());
+          setErrorMsg(errorMessage.trim());
+          return Promise.reject(errorMsg); 
         }
 
+        setErrorMsg(""); 
         return Promise.resolve();
       },
     },
