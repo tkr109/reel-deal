@@ -7,9 +7,9 @@ import axios from "axios";
 import "../Login/login.css"; // Import the CSS file with your styles
 
 function Register() {
+  const [errorMsg,setErrorMsg]=useState("")
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [errorMsg,setErrorMsg]=useState("")
   const submitHandler = async (values) => {
     try {
       console.log(values);
@@ -20,10 +20,13 @@ function Register() {
       setLoading(false);
     } catch (err) {
       setLoading(false);
+      setErrorMsg("registration Failed"+err.message);
       console.log(err);
       message.error("Registration Failed");
     }
   }
+
+
 
   useEffect(() => {
     if (localStorage.getItem('user')) {
@@ -83,10 +86,6 @@ function Register() {
   name="password"
   rules={[
     {
-      max:15,
-      message: 'Password must be at most 15 characters!',
-    },
-    {
       validator: (_, value) => {
         const hasDigit = /\d/.test(value);
         const hasLowercase = /[a-z]/.test(value);
@@ -95,7 +94,6 @@ function Register() {
         const hasWhitespace = /\s/.test(value);
 
         let errorMessage = '';
-        console.log(value);
 
         if(value.length<8){
           errorMessage+='Password must be at least 8 characters!';
@@ -126,7 +124,7 @@ function Register() {
 
         if (errorMessage) {
           setErrorMsg(errorMessage.trim());
-          return Promise.reject(errorMsg); 
+          return Promise.reject(); 
         }
 
         setErrorMsg(""); 
@@ -148,6 +146,9 @@ function Register() {
           </div>
           <div className="new-acc" style={{ textAlign: "center" }}>
             <small><Link className="Link" to="/login">Already have an account? Login</Link></small>
+          </div>
+          <div  name="errorMessage" style={{color:"white"}}>
+            {errorMsg}
           </div>
         </Form>
       </div>
