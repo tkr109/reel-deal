@@ -3,6 +3,7 @@ import Button from "../../components/button/Button";
 import { Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import image from "../../assets/hero.jpg";
 
 import "./login.css"; // Import the CSS file with your styles
 
@@ -34,7 +35,7 @@ function Login() {
   }, [navigate]);
 
   return (
-    <div className="login-container login-body" style={{ backgroundImage: `url("https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg")` }}>
+    <div className="login-container login-body" style={{ backgroundImage: `url(${image})` }}>
     {loading && <Spinner />}
     <div className="login-form">
       <div className="login-text">Login</div>
