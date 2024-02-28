@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import Button from "../../components/Button/button";
 import { Form, Input, Row, Col, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
+import image from "../../assets/hero.jpg"
+
 import axios from "axios";
 
 import "../Login/login.css"; // Import the CSS file with your styles
@@ -35,7 +37,7 @@ function Register() {
   }, [navigate]);
 
   return (
-    <div className="login-container login-body " style={{ backgroundImage: `url("https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg")` }}>
+    <div className="login-container login-body " style={{ backgroundImage: `url(${image})`}}>
       
       <div className="login-form" style={{maxWidth:'590px'}}>
         <div className="login-text">Register</div>
