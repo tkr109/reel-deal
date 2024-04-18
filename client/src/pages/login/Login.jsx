@@ -10,8 +10,9 @@ import "./login.css"; // Import the CSS file with your styles
 function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const [errorMsg,setErrorMsg]=useState("");
   const submitHandler = async (values) => {
+    
     try {
       setLoading(true);
       const { data } = await axios.post("http://localhost:8080/api/v1/users/login", values);
@@ -19,11 +20,14 @@ function Login() {
       message.success("Login Successful");
       localStorage.setItem("user", JSON.stringify({ ...data.user, password: "" }));
       window.location.reload();
+      navigate("/")
     } catch (error) {
       setLoading(false);
       console.log(error);
       await message.error("Invalid Login");
-      window.location.reload();
+       setErrorMsg("Invalid Login")
+      console.log(errorMsg)
+      // window.location.reload();
       
     }
   }
@@ -35,8 +39,8 @@ function Login() {
   }, [navigate]);
 
   return (
-    <div className="login-container login-body" style={{ backgroundImage: `url(${image})` }}>
-    {loading && <Spinner />}
+    <div className="login-container login-body"style={{ backgroundImage: `url(${image})`}}>
+    {/* {loading && <Spinner />} */}
     <div className="login-form">
       <div className="login-text">Login</div>
       <Form layout="vertical" onFinish={submitHandler} style={{ width: "400px" }} autoComplete="off">
@@ -44,22 +48,25 @@ function Login() {
         <Form.Item  name="email"> 
           <div className="login-field">
             <div className="fas fa-envelope" />
-            <Input type="email" placeholder="Email or Phone" />
+            <Input type="email" placeholder="Email or Phone" name="email"/>
           </div>
         </Form.Item>
         {/* label={<label style={{ color: "White" }}>Password</label>} */}
         <Form.Item  name="password">
           <div className="login-field">
             <div className="fas fa-lock" />
-            <Input type="password" placeholder="Password" />
+            <Input type="password" placeholder="Password" name="password"/>
           </div>
         </Form.Item>
         <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <Button label="Login Now"  className="login-button"/>
+          <Button label="Login Now" id="login" className="login-button" name="login"/>
         </div>
         <div className="new-acc" style={{ textAlign: "center" }}>
           <small><Link to="/register">New User? Register Now</Link></small>
-        </div>  
+        </div> 
+        <div style={{margin:'0px',padding:'0px',color:'red'}} >
+          <p name="errorMessage">{errorMsg}</p>
+        </div>
       </Form>
     </div>
   </div>

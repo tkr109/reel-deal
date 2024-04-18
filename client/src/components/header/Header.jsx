@@ -122,10 +122,11 @@ const Header = () => {
                 className="menuItemicon "
                 onClick={handleProfileClick}
               />
-              <li className="menuItem" onClick={handleProfileClick}>
+              <li className="menuItem" onClick={handleProfileClick} id="profile">
                 {loginUser.name}
               </li>
               <AiOutlineLogout
+                id="logout"
                 style={{ color: "white" }}
                 className="menuItemicon"
                 onClick={handleLogout}

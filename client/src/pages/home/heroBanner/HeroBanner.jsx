@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./style.scss";
 
 import Img from "../../../components/lazyLoadImage/Img";
+import banner from "../../../assets/banner2.png";
+
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 
 const HeroBanner = () => {
@@ -20,9 +22,8 @@ const HeroBanner = () => {
     }, []);
 
     const img_arr = [
-        "https://assets-in.bmscdn.com/promotions/cms/creatives/1698931897748_mindfoolvirdasdesktop.jpg",
-        "https://assets-in.bmscdn.com/promotions/cms/creatives/1698603955302_web.jpg",
-        "https://assets-in.bmscdn.com/promotions/cms/creatives/1700662585307_cocacolachandigarhiscooking1240x300.jpg"
+        "../../../assets/banner2",
+        "../../../assets/banner1"
     ];
 
     const searchQueryHandler = (event) => {
@@ -34,8 +35,8 @@ const HeroBanner = () => {
     return (
         <div className="heroBanner">
             <div className="backdrop-img">
-                <div className="image-change">
-                    <Img src={img_arr[currentImageIndex]} />
+                <div className="image-change" style={{margin:"3.8rem 0rem"}}>
+                    <img src={banner} />
                 </div>
             </div>
 
