@@ -47,19 +47,17 @@ function Login() {
       {/* label={<label style={{ color: "White" }}>Email</label>} */}
         <Form.Item  name="email"> 
           <div className="login-field">
-            <div className="fas fa-envelope" />
             <Input type="email" placeholder="Email or Phone" name="email"/>
           </div>
         </Form.Item>
         {/* label={<label style={{ color: "White" }}>Password</label>} */}
         <Form.Item  name="password">
           <div className="login-field">
-            <div className="fas fa-lock" />
             <Input type="password" placeholder="Password" name="password"/>
           </div>
         </Form.Item>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px" }}>
-          <Button label="Login Now" id="login" className="login-button" name="login"/>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "40px"}}>
+          <Button label="Login Now" id="login" className="login-button" name="login" />
         </div>
         <div className="new-acc" style={{ textAlign: "center" }}>
           <small><Link to="/register">New User? Register Now</Link></small>

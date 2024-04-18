@@ -60,47 +60,22 @@
     margin-top: 20px; 
     display: flex;
 }
-.login-field .fas {
-    height: 50px; 
-    color: #868686; 
-    font-size: 20px;
-    line-height: 50px; 
-    border: 1px solid #444; 
-    border-right: none; 
-    border-radius: 5px 0 0 5px;
-} 
+
 
 .login-field input,
 form button{
     height: 50px; 
     width: 100%;
-    outline: none;
     font-size: 19px;
     color: #868686;
     font-size: 19px; 
     padding: 0 15px; 
-    border-radius: 0 5px 5px 0; 
+    border-radius: 8px; 
     border: 1px solid #444;
-    caret-color: rgb(229,9,20);
     background: linear-gradient(#333, #222);
 }
 
-input:focus {
-    color: rgb(229,9,20);
-    box-shadow: 0 0 5px rgba(0, 255, 255, 0.2), inset 0 0 5px rgba(0, 255, 255, 0.1); 
-    background: linear-gradient(#333839, #222829); 
-    animation: glow 0.8s ease-out infinite alternate; 
-}
-@keyframes glow {
-0% {
-    border-color: rgb(229,9,20);
-    box-shadow: 0 0 5px rgba(229, 9, 20, 0.2), inset 0 0 5px rgba(0, 0, 0, 0.1);
-}
-100% {
-    border-color: rgb(229,9,20);
-    box-shadow: 0 0 20px rgba(229,9,20, 0.6), inset 0 0 10px rgba(229, 9,20, 0.4);
-}
-}
+
 
 .login-button {
     margin-top: 30px;
@@ -108,16 +83,7 @@ input:focus {
     font-weight: 600;
     letter-spacing: 1px;
     cursor: pointer;
-}
-
-.login-button:hover {
-    color: rgb(229, 9, 20);
-    border: 1px solid rgb(229, 9, 20);
-    box-shadow: 
-        0 0 10px rgba(229, 9, 20, 0.2),
-        0 0 15px rgba(0, 255, 255, 0.1),
-        0 0 5px rgba(229, 9, 20, 0.3),
-        1px 1px 1px rgb(229, 9, 20);
+    background-color: #f7bd00;
 }
 
 
@@ -126,7 +92,6 @@ input:focus {
 }
 
 .link a {
-    color: aqua;
     text-decoration: none;
 }
 .link a:hover {
@@ -135,9 +100,4 @@ input:focus {
 
 input::placeholder {
     color: #565555 !important; /* Change the placeholder text color to white */
-}
-
-
-#password_help > div:nth-child(2){
-    
 }
