@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
+import { History } from "../../components/history/history";
 
 const Profile = () => {
   const [userData, setUserData] = useState({
@@ -210,6 +211,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
+      <History />
     </div>
   );
 };
