@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import "./profile.css"
+import React, { useEffect, useState } from "react";
+import "./profile.css";
 
 const Profile = () => {
   const [userData, setUserData] = useState({
-    name: '',
-    phoneNumber: '',
-    city: '',
-    email: '',
-    password: '', // You may choose to handle passwords securely, not storing them in the state
+    name: "",
+    phoneNumber: "",
+    city: "",
+    email: "",
+    password: "", // You may choose to handle passwords securely, not storing them in the state
   });
 
   useEffect(() => {
     // Retrieve user data from local storage and update the state
-    const storedUserData = localStorage.getItem('user');
+    const storedUserData = localStorage.getItem("user");
     if (storedUserData) {
       setUserData(JSON.parse(storedUserData));
     }
@@ -30,27 +30,30 @@ const Profile = () => {
     e.preventDefault();
 
     // Save the updated user data to local storage
-    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem("user", JSON.stringify(userData));
 
     // Make an API call to update the data in the database
     try {
-      const response = await fetch(`http://localhost:8000/api/v1/users/update/${userData._id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      });
+      const response = await fetch(
+        `http://localhost:8000/api/v1/users/update/${userData._id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        }
+      );
 
       const data = await response.json();
 
       if (data.success) {
-        console.log('User data updated successfully:', data.updatedUser);
+        console.log("User data updated successfully:", data.updatedUser);
       } else {
-        console.error('Error updating user data:', data.error);
+        console.error("Error updating user data:", data.error);
       }
     } catch (error) {
-      console.error('Error updating user data:', error);
+      console.error("Error updating user data:", error);
     }
   };
 
@@ -68,10 +71,14 @@ const Profile = () => {
                   className="rounded mb-2 img-thumbnail"
                 />
               </div>
-              <div className="media-body text-white" style={{ textAlign: 'center' }}>
+              <div
+                className="media-body text-white"
+                style={{ textAlign: "center" }}
+              >
                 <h4 className="">{userData.name}</h4>
                 <p className="small mb-4">
-                  <i className="fas fa-map-marker-alt"></i>{userData.city}
+                  <i className="fas fa-map-marker-alt"></i>
+                  {userData.city}
                 </p>
                 <br />
                 <br />
@@ -79,7 +86,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="px-4 py-3">
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
               <div className="col">
                 <div className="row">
                   <div className="col mb-3">
@@ -102,7 +109,6 @@ const Profile = () => {
                                             name="name"
                                             value={userData.name}
                                             onChange={handleChange}
-                                            readOnly
                                           />
                                         </div>
                                       </div>
@@ -118,7 +124,6 @@ const Profile = () => {
                                             name="phoneNumber"
                                             value={userData.phoneNumber}
                                             onChange={handleChange}
-                                            readOnly
                                           />
                                         </div>
                                       </div>
@@ -150,7 +155,6 @@ const Profile = () => {
                                             name="city"
                                             value={userData.city}
                                             onChange={handleChange}
-                                            readOnly
                                           />
                                         </div>
                                       </div>
@@ -164,7 +168,6 @@ const Profile = () => {
                                             className="form-control"
                                             type="text"
                                             placeholder="India"
-                                            readOnly
                                           />
                                         </div>
                                       </div>
@@ -175,7 +178,6 @@ const Profile = () => {
                                             className="form-control"
                                             type="text"
                                             placeholder="User Access"
-                                            readOnly
                                           />
                                         </div>
                                       </div>
@@ -186,7 +188,11 @@ const Profile = () => {
 
                                 <div className="row">
                                   <div className="col d-flex justify-content-end">
-                                    <button className="btn btn-primary" type="submit" onClick={handleSubmit}>
+                                    <button
+                                      className="btn btn-primary"
+                                      type="submit"
+                                      onClick={handleSubmit}
+                                    >
                                       Save Changes
                                     </button>
                                   </div>

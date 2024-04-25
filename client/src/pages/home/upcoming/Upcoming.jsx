@@ -18,11 +18,11 @@ const Upcoming = () => {
 
     useEffect(() => {
         fetchMovies();
-        const updateMoviesInterval = setInterval(fetchMovies, 1000);
-        return () => {
-            clearInterval(updateMoviesInterval);
-        };
-    }, []);
+        // const updateMoviesInterval = setInterval(fetchMovies, 1000);
+        // return () => {
+        //     clearInterval(updateMoviesInterval);
+        // };
+    }, [1]);
 
     // Filter movies based on release date equal to or less than today
     const today = new Date();
