@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
-import './seatSelection.css'; // Import your CSS styles here
-import theatre from '../../assets/screenthumb.png';
-import { useNavigate, useParams } from 'react-router-dom';
-import Billing from '../billing/Billing';
+import React, { useState } from "react";
+import "./seatSelection.css"; // Import your CSS styles here
+import theatre from "../../assets/screenthumb.png";
+import { useNavigate, useParams } from "react-router-dom";
+import Billing from "../billing/Billing";
 
 const SeatSelection = () => {
   const [selectedSeats, setSelectedSeats] = useState([]);
-  const navigate=useNavigate()
-  const {mediaType,id,theatreName,timing,date,price}=useParams()
-  console.log("Theatre->",theatreName)
+  const navigate = useNavigate();
+  const { mediaType, id, theatreName, timing, date, price } = useParams();
+  console.log("Theatre->", theatreName);
 
   const handleSeatClick = (row, seat) => {
     const selected = `${row}-${seat}`;
@@ -20,16 +20,14 @@ const SeatSelection = () => {
   };
 
   const calculateTotalPrice = () => {
-    var sum=1;
-     selectedSeats.map((seat,key)=>
-     sum=(key+1)*100
-     )
-     return sum
+    var sum = 1;
+    selectedSeats.map((seat, key) => (sum = (key + 1) * 100));
+    return sum;
   };
 
   // Define the number of rows and seats in a row
   const numRows = 8; // 10 rows
-  const seatsPerRow = 10    ; // 20 seats in a row
+  const seatsPerRow = 10; // 20 seats in a row
 
   return (
     <div className="body-seat">
@@ -63,7 +61,9 @@ const SeatSelection = () => {
                   .map((_, seatIndex) => (
                     <div
                       className={`seat ${
-                        selectedSeats.includes(`${rowIndex}-${seatIndex}`) ? 'selected' : ''
+                        selectedSeats.includes(`${rowIndex}-${seatIndex}`)
+                          ? "selected"
+                          : ""
                       }`}
                       key={seatIndex}
                       onClick={() => handleSeatClick(rowIndex, seatIndex)}
@@ -73,14 +73,31 @@ const SeatSelection = () => {
             ))}
         </div>
 
-        <div className="text-wrapper" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-  <div className="text">
-    Selected Seats <span id="count">{selectedSeats.length}</span>
-  </div>
-  {selectedSeats.length>=1 && <button className='btn btn-warning' onClick={() => { navigate(`/billing/${id}/${theatreName}/${timing}/${date}/${price}/${selectedSeats.length}`) }}>
-    <span>Proceed </span>
-  </button>}
-</div>
+        <div
+          className="text-wrapper"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div className="text">
+            Selected Seats <span id="count">{selectedSeats.length}</span>
+          </div>
+          {selectedSeats.length >= 1 && (
+            <button
+              className="btn btn-warning"
+              id="app__seatSelection-procede"
+              onClick={() => {
+                navigate(
+                  `/billing/${id}/${theatreName}/${timing}/${date}/${price}/${selectedSeats.length}`
+                );
+              }}
+            >
+              <span>Proceed </span>
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
