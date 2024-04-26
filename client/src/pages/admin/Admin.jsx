@@ -136,16 +136,16 @@ function Admin() {
         "http://localhost:8080/api/v1/movies/add-movies",
 
         {
-            poster_path: values.poster_path,
-            vote_average: values.vote_average,
-            genre_ids: values.genre_ids, // Send the selected genre IDs
-            title: values.title,
-            release_date: values.release_date,
-            media_type:"Movie",
-            trailer_link: values.trailer_link,
-            director: values.director,
-            runtime: values.runtime,
-          }
+          poster_path: values.poster_path,
+          vote_average: values.vote_average,
+          genre_ids: values.genre_ids, // Send the selected genre IDs
+          title: values.title,
+          release_date: values.release_date,
+          media_type: "Movie",
+          trailer_link: values.trailer_link,
+          director: values.director,
+          runtime: values.runtime,
+        }
       );
       message.success("Movie Added Successfully");
       setIsModalVisible(false);
@@ -244,7 +244,7 @@ function Admin() {
       key: "actions",
       render: (text, record) => (
         <Space size="middle">
-          
+
           <Button
             type="danger"
             icon={<DeleteOutlined />}
@@ -255,7 +255,7 @@ function Admin() {
         </Space>
       ),
     },
-    
+
   ];
   // Define a function to handle adding a show to the theater
   const handleAddShow = (record) => {
@@ -284,7 +284,7 @@ function Admin() {
       window.location.href = trailerLink;
     }
   };
-    
+
 
   const movieColumns = [
     {
@@ -334,26 +334,26 @@ function Admin() {
       key: "runtime",
     },
 
-        {
-            title: "Trailer",
-            dataIndex: "trailer_link",
-            key: "trailer_link",
-            render: (trailerLink) => (
-              <Button
-                type="primary"
-                onClick={() => openTrailerLink(trailerLink)}
-              >
-                Open Trailer
-              </Button>
-            ),
-          },
+    {
+      title: "Trailer",
+      dataIndex: "trailer_link",
+      key: "trailer_link",
+      render: (trailerLink) => (
+        <Button
+          type="primary"
+          onClick={() => openTrailerLink(trailerLink)}
+        >
+          Open Trailer
+        </Button>
+      ),
+    },
 
     {
       title: "Actions",
       key: "actions",
       render: (text, record) => (
         <Space size="middle">
-          
+
           <Button
             type="danger"
             icon={<DeleteOutlined />}
@@ -408,7 +408,7 @@ function Admin() {
       key: "actions",
       render: (text, record) => (
         <Space size="middle">
-          
+
           <Button
             type="danger"
             icon={<DeleteOutlined />}
@@ -437,15 +437,15 @@ function Admin() {
     // Otherwise, return the default pagination item
     return originalElement;
   };
-  
+
 
   return (
     <div className="adminpage" >
       <div>.</div>
       <div>.  </div>
       <div>.</div>
-      <h5 className="listedmovie" style={{color:"white"}} >Listed Movies</h5>
-      <Table dataSource={movies} style={{marginTop:")px"}} columns={movieColumns}  pagination={{ pageSize: 5 }} />
+      <h5 className="listedmovie" style={{ color: "white" }} >Listed Movies</h5>
+      <Table dataSource={movies} style={{ marginTop: ")px" }} columns={movieColumns} pagination={{ pageSize: 5 }} />
 
       <Button type="primary" onClick={showModal}>
         Add Movie
@@ -567,121 +567,121 @@ function Admin() {
         </Form>
       </Modal>
 
-      <h5 style={{color:"white",marginTop:"20px"}}>Listed Shows</h5>
+      <h5 style={{ color: "white", marginTop: "20px" }}>Listed Shows</h5>
       <Table dataSource={shows} columns={showColumns} />
 
       <Button type="primary" onClick={showShowModal}>
         Add Show
       </Button>
       <Modal
-  title="Add Show"
-  visible={showModalVisible}
-  onOk={handleCancel}
-  onCancel={handleCancel}
-  footer={null}
->
-  <Form
-    name="basic"
-    initialValues={{ remember: true }}
-    onFinish={onShowFormFinish}
-  >
-    <Form.Item
-      label="Show Title"
-      name="title"
-      rules={[{ required: true, message: "Please input the show title!" }]}
-    >
-      <Input />
-    </Form.Item>
+        title="Add Show"
+        visible={showModalVisible}
+        onOk={handleCancel}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form
+          name="basic"
+          initialValues={{ remember: true }}
+          onFinish={onShowFormFinish}
+        >
+          <Form.Item
+            label="Show Title"
+            name="title"
+            rules={[{ required: true, message: "Please input the show title!" }]}
+          >
+            <Input />
+          </Form.Item>
 
-    <Form.Item
-      label="Poster Link"
-      name="poster_path"
-      rules={[{ required: true, message: "Please input the poster link!" }]}
-    >
-      <Input />
-    </Form.Item>
+          <Form.Item
+            label="Poster Link"
+            name="poster_path"
+            rules={[{ required: true, message: "Please input the poster link!" }]}
+          >
+            <Input />
+          </Form.Item>
 
-    <Form.Item
-      label="Release Date"
-      name="release_date"
-      rules={[
-        { required: true, message: "Please input the release date!" },
-      ]}
-    >
-      <DatePicker format="YYYY-MM-DD" disabledDate={disabledDate} />
-    </Form.Item>
+          <Form.Item
+            label="Release Date"
+            name="release_date"
+            rules={[
+              { required: true, message: "Please input the release date!" },
+            ]}
+          >
+            <DatePicker format="YYYY-MM-DD" disabledDate={disabledDate} />
+          </Form.Item>
 
-    <Form.Item
-      label="Overview"
-      name="overview"
-      rules={[
-        { required: true, message: "Please input the overview!" },
-      ]}
-    >
-      <Input.TextArea />
-    </Form.Item>
+          <Form.Item
+            label="Overview"
+            name="overview"
+            rules={[
+              { required: true, message: "Please input the overview!" },
+            ]}
+          >
+            <Input.TextArea />
+          </Form.Item>
 
-    <Form.Item
-      label="Media Type"
-      name="media_type"
-      rules={[
-        { required: true, message: "Please input the media type!" },
-      ]}
-    >
-      <Input />
-    </Form.Item>
+          <Form.Item
+            label="Media Type"
+            name="media_type"
+            rules={[
+              { required: true, message: "Please input the media type!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-    
-    <Form.Item
-      label="Director"
-      name="director"
-      rules={[
-        { required: true, message: "Please input the director's name!" },
-      ]}
-    >
-      <Input />
-    </Form.Item>
 
-    <Form.Item
-      label="Runtime"
-      name="runtime"
-      rules={[
-        { required: true, message: "Please input the runtime!" },
-      ]}
-    >
-      <InputNumber />
-    </Form.Item>
-    
-    <Form.Item
-      label="Vote_Average"
-      name="vote_average"
-      rules={[
-        { required: true, message: "Please input the vote_average!" },
-      ]}
-    >
-      <InputNumber />
-    </Form.Item>
-    <Form.Item
-      label="City"
-      name="city"
-      rules={[
-        { required: true, message: "Please input the city!" },
-      ]}
-    >
-      <Input />
-    </Form.Item>
+          <Form.Item
+            label="Director"
+            name="director"
+            rules={[
+              { required: true, message: "Please input the director's name!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-   
+          <Form.Item
+            label="Runtime"
+            name="runtime"
+            rules={[
+              { required: true, message: "Please input the runtime!" },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
 
-    <Form.Item style={{margin:"0px"}}>
-      <Button type="primary" htmlType="submit">
-        Add Show
-      </Button>
-    </Form.Item>
-  </Form>
-</Modal>
+          <Form.Item
+            label="Vote_Average"
+            name="vote_average"
+            rules={[
+              { required: true, message: "Please input the vote_average!" },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
+          <Form.Item
+            label="City"
+            name="city"
+            rules={[
+              { required: true, message: "Please input the city!" },
+            ]}
+          >
+            <Input />
+          </Form.Item>
 
-      <h5 style={{color:"white" , marginTop:"20px"}}>Listed Theaters</h5>
+
+
+          <Form.Item style={{ margin: "0px" }}>
+            <Button type="primary" htmlType="submit">
+              Add Show
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      <h5 style={{ color: "white", marginTop: "20px" }}>Listed Theaters</h5>
       <Table dataSource={theaters} columns={theaterColumns} />
 
       <Button type="primary" onClick={showTheaterModal} >
