@@ -3,84 +3,85 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./billing.css";
 import { useParams } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
-import { faMoneyCheck } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMoneyCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
 
 function Billing() {
   const { id, theatreName, timing, date, price, seats } = useParams();
+  const userID = JSON.parse(localStorage.getItem("user"));
   console.log(seats);
-  
+
   const [movie, setMovie] = useState(null);
   const [quantity1, setQuantity1] = useState(0);
   const [quantity2, setQuantity2] = useState(0);
   const [quantity3, setQuantity3] = useState(0);
   const [quantity4, setQuantity4] = useState(0);
-  
-  const snackPrice=quantity1*700+quantity2*400+quantity3*310+quantity4*500
-  
+
+  const snackPrice =
+    quantity1 * 700 + quantity2 * 400 + quantity3 * 310 + quantity4 * 500;
+
   useEffect(() => {
     const fetchMovieDetails = async () => {
       try {
         const response = await fetch(
           `http://localhost:8080/api/v1/movies/get-movie/${id}`
-          );
-          if (!response.ok) {
-            throw new Error("Failed to fetch movie details.");
-          }
-          const movieData = await response.json();
-          setMovie(movieData);
-        } catch (error) {
-          console.error("Error fetching movie details:", error);
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch movie details.");
         }
-      };
-      
-      fetchMovieDetails();
-      const getShow = async () => {
-        try {
-          const response = await fetch(
-            `http://localhost:8080/api/v1/shows/get-show/${id}`
-          );
-          if (!response.ok) {
-            throw new Error("Failed to fetch show details.");
-          }
-          const movieData = await response.json();
-          setMovie(movieData);
-          console.log(movieData) // Store movie details in the state
-        } catch (error) {
-          console.error("Error fetching show details:", error);
-        }
-      };
-      getShow()
-    }, [id]);
-    
-    // Render loading state while movie data is being fetched
-    if (!movie) {
-      return <div>Loading...</div>;
-    }
-    
-    const timingFormats = {
-      Morning: "09:30 AM",
-      Afternoon: "01:30 PM",
-      Evening: "06:00 PM",
-      Night: "09:00 PM",
-      "Late Night": "12:00 AM",
+        const movieData = await response.json();
+        setMovie(movieData);
+      } catch (error) {
+        console.error("Error fetching movie details:", error);
+      }
     };
-    
-    // Extract movie details
-    const { title, release_date, runtime } = movie;
-    const totalprice = seats * price;
-    
-    const makePayment = async () => {
-      const stripe = await loadStripe(
+
+    fetchMovieDetails();
+    const getShow = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:8080/api/v1/shows/get-show/${id}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch show details.");
+        }
+        const movieData = await response.json();
+        setMovie(movieData);
+        console.log(movieData);
+      } catch (error) {
+        console.error("Error fetching show details:", error);
+      }
+    };
+    getShow();
+  }, [id]);
+
+  if (!movie) {
+    return <div>Loading...</div>;
+  }
+
+  const timingFormats = {
+    Morning: "09:30 AM",
+    Afternoon: "01:30 PM",
+    Evening: "06:00 PM",
+    Night: "09:00 PM",
+    "Late Night": "12:00 AM",
+  };
+
+  const { title } = movie;
+  const totalprice = seats * price + snackPrice + 30;
+
+  const makePayment = async () => {
+    const stripe = await loadStripe(
       "pk_test_51NZsJHSFP0q9Yrdkj9kLsKNU6lyu0ZcwNoNOTa84RuKZFu1tM27YOkQ2zDE5H8BKXTF04XW0S3jPbiua05GPwbbA00bdxVRjO8"
-      );
-      
-      movie.price=30+snackPrice+totalprice
-      const body = {
-        products: movie, // Use an array for products
-      };
-      const headers = {
-        "Content-Type": "application/json",
+    );
+
+    movie.price = totalprice;
+    const body = {
+      products: movie,
+    };
+    const headers = {
+      "Content-Type": "application/json",
     };
     const response = await fetch(
       "http://localhost:8080/api/v1/payment/create-checkout-session",
@@ -97,22 +98,80 @@ function Billing() {
       sessionId: session.id,
     });
 
+    await addBooking(id, title, date, totalprice);
+
     if (result.error) {
       console.log(result.error);
     }
   };
 
+  const addBooking = async (id, movieName, date, amount) => {
+    try {
+      const bookingData = {
+        userId: userID,
+        movieName: movieName,
+        date: date,
+        amount: amount,
+      };
+
+      console.log("Booking Data:", bookingData);
+
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/bookings/add-bookings",
+        bookingData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        console.log("Booking created successfully!");
+      } else {
+        console.error("Failed to create booking. Status:", response.status);
+
+        alert("Oops! Failed to create booking.");
+      }
+    } catch (error) {
+      console.error("Error creating booking:", error);
+      alert("Oops! Error creating booking.");
+    }
+  };
 
   return (
     <div className="bill">
       <div className="container-fluid-bill">
         <div className="container-bill">
-        <div className="div-left-bill" style={{padding:"20px"}}>
-        <div className="cards-div">
-              <h1 style={{color:"white", marginTop:"8px",textAlign:"center"}}>Grab A <span style={{color:"orange"}} >Bite</span>!</h1>
-              <p style={{color:"white",textAlign:"center",marginBottom:"15px"}}>Prebook Your Meal and Save More!</p>
+          <div className="div-left-bill" style={{ padding: "20px" }}>
+            <div className="cards-div">
+              <h1
+                style={{
+                  color: "white",
+                  marginTop: "8px",
+                  textAlign: "center",
+                }}
+              >
+                Grab A <span style={{ color: "orange" }}>Bite</span>!
+              </h1>
+              <p
+                style={{
+                  color: "white",
+                  textAlign: "center",
+                  marginBottom: "15px",
+                }}
+              >
+                Prebook Your Meal and Save More!
+              </p>
               <div className="row">
-                <div className="col-md-6" style={{ marginBottom: "0.5rem",  marginTop: "0.5rem" ,marginLeft:"0px", }}>
+                <div
+                  className="col-md-6"
+                  style={{
+                    marginBottom: "0.5rem",
+                    marginTop: "0.5rem",
+                    marginLeft: "0px",
+                  }}
+                >
                   <div className="card mx-auto">
                     <div className="row no-gutters">
                       <div className="col-md-4" style={{ padding: "0px" }}>
@@ -125,24 +184,52 @@ function Billing() {
                       <div className="col-md-8" style={{ padding: "12px" }}>
                         <h5 className="card-title">Couple Combo (Salted)</h5>
                         <p className="card-text">
-                        Max Popcorn Salted 170g + 2 Pepsi 360ml<span style={{fontSize:"13px"}}><br/>(597 Kcal | Allergens: Milk, Caffeine)</span>.
+                          Max Popcorn Salted 170g + 2 Pepsi 360ml
+                          <span style={{ fontSize: "13px" }}>
+                            <br />
+                            (597 Kcal | Allergens: Milk, Caffeine)
+                          </span>
+                          .
                         </p>
-                        
+
                         <div className="amount">
                           <div style={{ fontSize: "20px", fontWeight: "600" }}>
-                          ₹700
+                            ₹700
                           </div>
-                          <div className="quantity-buttons" style={{ display: "flex", alignItems: "center" , marginRight:"0.3rem"}}>
-                          <button className="btn btn-dark button" onClick={() => setQuantity1(quantity1 - 1)} disabled={quantity1 <= 0}>-</button>
-                          <span style={{ margin: "0 10px" }}>{quantity1}</span>
-                            <button className="btn btn-dark button" onClick={() => setQuantity1(quantity1 + 1)}>+</button>
+                          <div
+                            className="quantity-buttons"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              marginRight: "0.3rem",
+                            }}
+                          >
+                            <button
+                              className="btn btn-dark button"
+                              onClick={() => setQuantity1(quantity1 - 1)}
+                              disabled={quantity1 <= 0}
+                            >
+                              -
+                            </button>
+                            <span style={{ margin: "0 10px" }}>
+                              {quantity1}
+                            </span>
+                            <button
+                              className="btn btn-dark button"
+                              onClick={() => setQuantity1(quantity1 + 1)}
+                            >
+                              +
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6" style={{ marginBottom: "0.5rem",  marginTop: "0.5rem" }}>
+                <div
+                  className="col-md-6"
+                  style={{ marginBottom: "0.5rem", marginTop: "0.5rem" }}
+                >
                   <div className="card mx-auto">
                     {/* Second card content */}
                     <div className="row no-gutters">
@@ -156,16 +243,41 @@ function Billing() {
                       <div className="col-md-8" style={{ padding: "12px" }}>
                         <h5 className="card-title">Large Caramel Popcorn</h5>
                         <p className="card-text">
-                        Large Caramel Popcorn serves 2 people<span style={{fontSize:"13px"}}><br/>(597 Kcal | Allergens: Milk, Caffeine)</span>.
+                          Large Caramel Popcorn serves 2 people
+                          <span style={{ fontSize: "13px" }}>
+                            <br />
+                            (597 Kcal | Allergens: Milk, Caffeine)
+                          </span>
+                          .
                         </p>
                         <div className="amount">
                           <div style={{ fontSize: "20px", fontWeight: "600" }}>
-                          ₹400
+                            ₹400
                           </div>
-                          <div className="quantity-buttons" style={{ display: "flex", alignItems: "center" , marginRight:"0.3rem"}}>
-                          <button className="btn btn-dark button" onClick={() => setQuantity2(quantity2 - 1)} disabled={quantity2 <= 0}>-</button>
-                          <span style={{ margin: "0 10px" }}>{quantity2}</span>
-                            <button className="btn btn-dark button" onClick={() => setQuantity2(quantity2 + 1)}>+</button>
+                          <div
+                            className="quantity-buttons"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              marginRight: "0.3rem",
+                            }}
+                          >
+                            <button
+                              className="btn btn-dark button"
+                              onClick={() => setQuantity2(quantity2 - 1)}
+                              disabled={quantity2 <= 0}
+                            >
+                              -
+                            </button>
+                            <span style={{ margin: "0 10px" }}>
+                              {quantity2}
+                            </span>
+                            <button
+                              className="btn btn-dark button"
+                              onClick={() => setQuantity2(quantity2 + 1)}
+                            >
+                              +
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -175,8 +287,8 @@ function Billing() {
               </div>
 
               {/* Second row of cards */}
-              <div className="row" style={{marginTop:"20px"}}>
-                <div className="col-md-6" style={{ marginBottom: "0.5rem",  }}>
+              <div className="row" style={{ marginTop: "20px" }}>
+                <div className="col-md-6" style={{ marginBottom: "0.5rem" }}>
                   <div className="card mx-auto">
                     {/* Third card content */}
                     <div className="row no-gutters">
@@ -190,23 +302,48 @@ function Billing() {
                       <div className="col-md-8" style={{ padding: "12px" }}>
                         <h5 className="card-title">Large Pepsi 810ml</h5>
                         <p className="card-text">
-                        Large Pepsi 810ml serves only 1 person<span style={{fontSize:"13px"}}><br/>(597 Kcal | Allergens: Milk, Caffeine)</span>.
+                          Large Pepsi 810ml serves only 1 person
+                          <span style={{ fontSize: "13px" }}>
+                            <br />
+                            (597 Kcal | Allergens: Milk, Caffeine)
+                          </span>
+                          .
                         </p>
                         <div className="amount">
                           <div style={{ fontSize: "20px", fontWeight: "600" }}>
-                          ₹310
+                            ₹310
                           </div>
-                          <div className="quantity-buttons" style={{ display: "flex", alignItems: "center" , marginRight:"0.3rem"}}>
-                          <button className="btn btn-dark button" onClick={() => setQuantity3(quantity3 - 1)} disabled={quantity3 <= 0}>-</button>
-                          <span style={{ margin: "0 10px" }}>{quantity3}</span>
-                            <button className="btn btn-dark button" onClick={() => setQuantity3(quantity3 + 1)}>+</button>
+                          <div
+                            className="quantity-buttons"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              marginRight: "0.3rem",
+                            }}
+                          >
+                            <button
+                              className="btn btn-dark button"
+                              onClick={() => setQuantity3(quantity3 - 1)}
+                              disabled={quantity3 <= 0}
+                            >
+                              -
+                            </button>
+                            <span style={{ margin: "0 10px" }}>
+                              {quantity3}
+                            </span>
+                            <button
+                              className="btn btn-dark button"
+                              onClick={() => setQuantity3(quantity3 + 1)}
+                            >
+                              +
+                            </button>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="col-md-6" style={{ marginBottom: "0.5rem",   }} >
+                <div className="col-md-6" style={{ marginBottom: "0.5rem" }}>
                   <div className="card mx-auto">
                     {/* Fourth card content */}
                     <div className="row no-gutters">
@@ -220,16 +357,41 @@ function Billing() {
                       <div className="col-md-8" style={{ padding: "12px" }}>
                         <h5 className="card-title">Regular Combo (Cheese)</h5>
                         <p className="card-text">
-                        Regular Popcorn Cheese 75g + Pepsi 360ml<span style={{fontSize:"13px"}}><br/>(597 Kcal | Allergens: Milk, Caffeine)</span>.
+                          Regular Popcorn Cheese 75g + Pepsi 360ml
+                          <span style={{ fontSize: "13px" }}>
+                            <br />
+                            (597 Kcal | Allergens: Milk, Caffeine)
+                          </span>
+                          .
                         </p>
                         <div className="amount">
                           <div style={{ fontSize: "20px", fontWeight: "600" }}>
-                          ₹500
+                            ₹500
                           </div>
-                          <div className="quantity-buttons" style={{ display: "flex", alignItems: "center" , marginRight:"0.3rem"}}>
-                          <button className="btn btn-dark button" onClick={() => setQuantity4(quantity4 - 1)} disabled={quantity4 <= 0}>-</button>
-                          <span style={{ margin: "0 10px" }}>{quantity4}</span>
-                            <button className="btn btn-dark button" onClick={() => setQuantity4(quantity4 + 1)}>+</button>
+                          <div
+                            className="quantity-buttons"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              marginRight: "0.3rem",
+                            }}
+                          >
+                            <button
+                              className="btn btn-dark button"
+                              onClick={() => setQuantity4(quantity4 - 1)}
+                              disabled={quantity4 <= 0}
+                            >
+                              -
+                            </button>
+                            <span style={{ margin: "0 10px" }}>
+                              {quantity4}
+                            </span>
+                            <button
+                              className="btn btn-dark button"
+                              onClick={() => setQuantity4(quantity4 + 1)}
+                            >
+                              +
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -238,8 +400,6 @@ function Billing() {
                 </div>
               </div>
               {/* Second row of cards */}
-              
-              {/* Continue adding rows for additional cards */}
             </div>
           </div>
           <div className="div-right-bill" style={{ textAlign: "center" }}>
@@ -252,14 +412,29 @@ function Billing() {
                     <div className="receipt-bill">
                       <div className="details-bill">
                         <div className="item">
-                          {(movie.media_type==="Movie" ||movie.media_type==="movie") &&<span>Movie Name</span>}
-                          {(movie.media_type==="show" ||movie.media_type==="Show") &&<span>Show Name</span>}
+                          {(movie.media_type === "Movie" ||
+                            movie.media_type === "movie") && (
+                            <span>Movie Name</span>
+                          )}
+                          {(movie.media_type === "show" ||
+                            movie.media_type === "Show") && (
+                            <span>Show Name</span>
+                          )}
                           <h3>{title}</h3>
                         </div>
                         <div className="item">
-                          {(movie.media_type==="Movie" ||movie.media_type==="movie") && <><span>Audi</span>                          <h3>2</h3></>}
-                          {(movie.media_type==="show" ||movie.media_type==="Show") && <><span>Venue</span>                          <h3>Reels Club</h3></>}
-
+                          {(movie.media_type === "Movie" ||
+                            movie.media_type === "movie") && (
+                            <>
+                              <span>Audi</span> <h3>2</h3>
+                            </>
+                          )}
+                          {(movie.media_type === "show" ||
+                            movie.media_type === "Show") && (
+                            <>
+                              <span>Venue</span> <h3>Reels Club</h3>
+                            </>
+                          )}
                         </div>
                         <div className="item">
                           <span>Date</span>
@@ -299,7 +474,13 @@ function Billing() {
                         </div>
                       </div>
                     </div>
-      <button className="btn btn-warning "onClick={makePayment}>Proceed to Pay<FontAwesomeIcon icon={faMoneyCheck}  style={{marginLeft:"10px"}}/></button>
+                    <button className="btn btn-warning " onClick={makePayment}>
+                      Proceed to Pay
+                      <FontAwesomeIcon
+                        icon={faMoneyCheck}
+                        style={{ marginLeft: "10px" }}
+                      />
+                    </button>
                   </div>
                 </div>
               </div>

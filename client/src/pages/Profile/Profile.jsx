@@ -1,30 +1,32 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
-import { History } from "../../components/history/history";;
-import { Modal, Form, Input, Button } from 'antd';
-import './profile.css';
-import axios from 'axios';
+import { History } from "../../components/history/history";
+import { Modal, Form, Input, Button } from "antd";
+import "./profile.css";
+import axios from "axios";
 
 const Profile = () => {
   const [userData, setUserData] = useState({
-    name: '',
-    phoneNumber: '',
-    city: '',
-    email: '',
+    name: "",
+    phoneNumber: "",
+    city: "",
+    email: "",
   });
 
   const [showModal, setShowModal] = useState(false);
-  const userId = JSON.parse(localStorage.getItem('user'))._id;
+  const [bookings, setBookings] = useState([]);
+  const userId = JSON.parse(localStorage.getItem("user"))._id;
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('user');
-    
+    const storedUserData = localStorage.getItem("user");
+
     if (storedUserData) {
       const parsedUserData = JSON.parse(storedUserData);
       setUserData(parsedUserData);
     }
-  }, []);
 
+    fetchUserBookings();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -36,7 +38,7 @@ const Profile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowModal(true); 
+    setShowModal(true);
   };
 
   const handleModalCancel = () => {
@@ -47,19 +49,33 @@ const Profile = () => {
     try {
       const { name, phoneNumber, city, email } = userData;
       const updatedUserData = { name, phoneNumber, city, email };
-  
-      const response = await axios.put(`http://localhost:8080/api/v1/users/update/${userId}`, updatedUserData);
-  
-      console.log('Update response:', response.data);
-  
-      localStorage.setItem('user', JSON.stringify(response.data.updatedUser));
-      
+
+      const response = await axios.put(
+        `http://localhost:8080/api/v1/users/update/${userId}`,
+        updatedUserData
+      );
+
+      console.log("Update response:", response.data);
+
+      localStorage.setItem("user", JSON.stringify(response.data.updatedUser));
+
       setShowModal(false);
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error("Error updating user:", error);
     }
   };
-  
+
+  const fetchUserBookings = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/api/v1/bookings/users/bookings/${userId}`
+      );
+
+      setBookings(response.data.bookings);
+    } catch (error) {
+      console.error("Error fetching user bookings:", error);
+    }
+  };
 
   return (
     <div className="row py-5 px-4 prof-body">
@@ -75,14 +91,19 @@ const Profile = () => {
                   className="rounded mb-2 img-thumbnail"
                 />
               </div>
-              <div className="media-body text-white" style={{ textAlign: 'center' }}>
-                <h4 className="" style={{marginBottom:"25px"}}>{userData.name}</h4>
+              <div
+                className="media-body text-white"
+                style={{ textAlign: "center" }}
+              >
+                <h4 className="" style={{ marginBottom: "25px" }}>
+                  {userData.name}
+                </h4>
                 <p>{userData.city}</p>
               </div>
             </div>
           </div>
           <div className="px-4 py-3">
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            <div style={{ display: "flex", flexWrap: "wrap" }}>
               <div className="col">
                 <div className="row">
                   <div className="col mb-3">
@@ -175,7 +196,11 @@ const Profile = () => {
                                 </div>
                                 <div className="row">
                                   <div className="col d-flex justify-content-end">
-                                    <button className="btn btn-primary" type="submit" onClick={handleSubmit}>
+                                    <button
+                                      className="btn btn-primary"
+                                      type="submit"
+                                      onClick={handleSubmit}
+                                    >
                                       Edit Profile
                                     </button>
                                   </div>
@@ -193,7 +218,7 @@ const Profile = () => {
           </div>
         </div>
       </div>
-      <History />
+      <History bookings={bookings} />
 
       <Modal
         title="Edit Profile"
@@ -214,10 +239,18 @@ const Profile = () => {
             <Input name="name" value={userData.name} onChange={handleChange} />
           </Form.Item>
           <Form.Item label="Phone Number">
-            <Input name="phoneNumber" value={userData.phoneNumber} onChange={handleChange} />
+            <Input
+              name="phoneNumber"
+              value={userData.phoneNumber}
+              onChange={handleChange}
+            />
           </Form.Item>
           <Form.Item label="Email">
-            <Input name="email" value={userData.email} onChange={handleChange} />
+            <Input
+              name="email"
+              value={userData.email}
+              onChange={handleChange}
+            />
           </Form.Item>
           <Form.Item label="City">
             <Input name="city" value={userData.city} onChange={handleChange} />
