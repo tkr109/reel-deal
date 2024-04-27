@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from "react";
 import "./profile.css";
-import { History } from "../../components/history/history";
+import { History } from "../../components/history/history";;
+import { Modal, Form, Input, Button } from 'antd';
+import './profile.css';
+import axios from 'axios';
 
 const Profile = () => {
   const [userData, setUserData] = useState({
-    name: "",
-    phoneNumber: "",
-    city: "",
-    email: "",
-    password: "", // You may choose to handle passwords securely, not storing them in the state
+    name: '',
+    phoneNumber: '',
+    city: '',
+    email: '',
   });
 
+  const [showModal, setShowModal] = useState(false);
+  const userId = JSON.parse(localStorage.getItem('user'))._id;
+
   useEffect(() => {
-    // Retrieve user data from local storage and update the state
-    const storedUserData = localStorage.getItem("user");
+    const storedUserData = localStorage.getItem('user');
+    
     if (storedUserData) {
-      setUserData(JSON.parse(storedUserData));
+      const parsedUserData = JSON.parse(storedUserData);
+      setUserData(parsedUserData);
     }
   }, []);
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,42 +34,38 @@ const Profile = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setShowModal(true); 
+  };
 
-    // Save the updated user data to local storage
-    localStorage.setItem("user", JSON.stringify(userData));
+  const handleModalCancel = () => {
+    setShowModal(false);
+  };
 
-    // Make an API call to update the data in the database
+  const handleModalOk = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8000/api/v1/users/update/${userData._id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(userData),
-        }
-      );
-
-      const data = await response.json();
-
-      if (data.success) {
-        console.log("User data updated successfully:", data.updatedUser);
-      } else {
-        console.error("Error updating user data:", data.error);
-      }
+      const { name, phoneNumber, city, email } = userData;
+      const updatedUserData = { name, phoneNumber, city, email };
+  
+      const response = await axios.put(`http://localhost:8080/api/v1/users/update/${userId}`, updatedUserData);
+  
+      console.log('Update response:', response.data);
+  
+      localStorage.setItem('user', JSON.stringify(response.data.updatedUser));
+      
+      setShowModal(false);
     } catch (error) {
-      console.error("Error updating user data:", error);
+      console.error('Error updating user:', error);
     }
   };
+  
 
   return (
     <div className="row py-5 px-4 prof-body">
       <div className="col-md-5 mx-auto pff">
         <div className="bg-white shadow rounded overflow-hidden">
-          <div className="cover pb-4 ">
+          <div className="cover pb-4">
             <div className="profile-head">
               <div>
                 <img
@@ -72,129 +75,108 @@ const Profile = () => {
                   className="rounded mb-2 img-thumbnail"
                 />
               </div>
-              <div
-                className="media-body text-white"
-                style={{ textAlign: "center" }}
-              >
-                <h4 className="">{userData.name}</h4>
-                <p className="small mb-4">
-                  <i className="fas fa-map-marker-alt"></i>
-                  {userData.city}
-                </p>
-                <br />
-                <br />
+              <div className="media-body text-white" style={{ textAlign: 'center' }}>
+                <h4 className="" style={{marginBottom:"25px"}}>{userData.name}</h4>
+                <p>{userData.city}</p>
               </div>
             </div>
           </div>
           <div className="px-4 py-3">
-            <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
               <div className="col">
                 <div className="row">
                   <div className="col mb-3">
                     <div className="card">
                       <div className="card-body">
                         <div className="e-profile">
-                          <div className="row"></div>
                           <div className="tab-content pt-3">
                             <div className="tab-pane active">
                               <form className="form" noValidate="">
                                 <div className="row">
                                   <div className="col">
-                                    <div className="row">
-                                      <div className="col">
-                                        <div className="form-group">
-                                          <label>First Name</label>
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="name"
-                                            value={userData.name}
-                                            onChange={handleChange}
-                                          />
-                                        </div>
-                                      </div>
+                                    <div className="form-group">
+                                      <label>First Name</label>
+                                      <input
+                                        className="form-control"
+                                        type="text"
+                                        name="name"
+                                        value={userData.name}
+                                        onChange={handleChange}
+                                        readOnly
+                                      />
                                     </div>
-                                    <br />
-                                    <div className="row">
-                                      <div className="col">
-                                        <div className="form-group">
-                                          <label>Phone Number</label>
-                                          <input
-                                            className="form-control"
-                                            type="number"
-                                            name="phoneNumber"
-                                            value={userData.phoneNumber}
-                                            onChange={handleChange}
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <br />
-                                    <div className="row">
-                                      <div className="col">
-                                        <div className="form-group">
-                                          <label>Email</label>
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="email"
-                                            value={userData.email}
-                                            onChange={handleChange}
-                                            readOnly
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <br />
-                                    <div className="row">
-                                      <div className="col">
-                                        <div className="form-group">
-                                          <label>City</label>
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            name="city"
-                                            value={userData.city}
-                                            onChange={handleChange}
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <br />
-                                    <div className="row">
-                                      <div className="col">
-                                        <div className="form-group">
-                                          <label>Country</label>
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            placeholder="India"
-                                          />
-                                        </div>
-                                      </div>
-                                      <div className="col">
-                                        <div className="form-group">
-                                          <label>Role</label>
-                                          <input
-                                            className="form-control"
-                                            type="text"
-                                            placeholder="User Access"
-                                          />
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <br />
                                   </div>
                                 </div>
-
+                                <div className="row">
+                                  <div className="col">
+                                    <div className="form-group">
+                                      <label>Phone Number</label>
+                                      <input
+                                        className="form-control"
+                                        type="text"
+                                        name="phoneNumber"
+                                        value={userData.phoneNumber}
+                                        onChange={handleChange}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col">
+                                    <div className="form-group">
+                                      <label>Email</label>
+                                      <input
+                                        className="form-control"
+                                        type="text"
+                                        name="email"
+                                        value={userData.email}
+                                        onChange={handleChange}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col">
+                                    <div className="form-group">
+                                      <label>City</label>
+                                      <input
+                                        className="form-control"
+                                        type="text"
+                                        name="city"
+                                        value={userData.city}
+                                        onChange={handleChange}
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="row">
+                                  <div className="col">
+                                    <div className="form-group">
+                                      <label>Country</label>
+                                      <input
+                                        className="form-control"
+                                        type="text"
+                                        value="India"
+                                        readOnly
+                                      />
+                                    </div>
+                                  </div>
+                                  <div className="col">
+                                    <div className="form-group">
+                                      <label>Role</label>
+                                      <input
+                                        className="form-control"
+                                        type="text"
+                                        value="User Access"
+                                        readOnly
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
                                 <div className="row">
                                   <div className="col d-flex justify-content-end">
-                                    <button
-                                      className="btn btn-primary"
-                                      type="submit"
-                                      onClick={handleSubmit}
-                                    >
-                                      Save Changes
+                                    <button className="btn btn-primary" type="submit" onClick={handleSubmit}>
+                                      Edit Profile
                                     </button>
                                   </div>
                                 </div>
@@ -212,6 +194,36 @@ const Profile = () => {
         </div>
       </div>
       <History />
+
+      <Modal
+        title="Edit Profile"
+        visible={showModal}
+        onCancel={handleModalCancel}
+        footer={[
+          <Button key="cancel" onClick={handleModalCancel}>
+            Cancel
+          </Button>,
+          <Button key="submit" type="primary" onClick={handleModalOk}>
+            Submit
+          </Button>,
+        ]}
+      >
+        {/* Modal */}
+        <Form layout="vertical">
+          <Form.Item label="Name">
+            <Input name="name" value={userData.name} onChange={handleChange} />
+          </Form.Item>
+          <Form.Item label="Phone Number">
+            <Input name="phoneNumber" value={userData.phoneNumber} onChange={handleChange} />
+          </Form.Item>
+          <Form.Item label="Email">
+            <Input name="email" value={userData.email} onChange={handleChange} />
+          </Form.Item>
+          <Form.Item label="City">
+            <Input name="city" value={userData.city} onChange={handleChange} />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

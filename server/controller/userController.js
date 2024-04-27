@@ -36,38 +36,28 @@ const registerController = async (req, res) => {
 };
 
 const updateUserController = async (req, res) => {
-    try {
-      const { id } = req.params;
-      const user = await userModel.findById(id);
-  
-      if (!user) {
-        return res.status(404).json({
-          success: false,
-          message: "User not found",
-        });
-      }
+  try {
+    const { id } = req.params;
 
-      user.name = req.body.name;
-      user.phoneNumber = req.body.phoneNumber;
-      user.city = req.body.city;
-      user.isAdmin = req.body.isAdmin;
+    const updatedUser = await userModel.findByIdAndUpdate(id, req.body, { new: true });
 
-  
-      // Save the updated user data
-      await user.save();
-  
-      res.status(200).json({
-        success: true,
-        message: "User updated successfully",
-        data: user,
-      });
-    } catch (error) {
-      res.status(400).json({
-        success: false,
-        error,
-      });
+    if (!updatedUser) {
+      return res.status(404).send("User Not Found");
     }
-  };
-  
+
+    console.log('Updated User:', updatedUser);
+
+    res.status(200).json({
+      success: true,
+      updatedUser,
+    });
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(400).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
 
 module.exports = { loginController, registerController, updateUserController };
