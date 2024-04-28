@@ -255,13 +255,6 @@
                 onChange={handleChange}
               />
             </Form.Item>
-            <Form.Item label="Email">
-              <Input
-                name="email"
-                value={userData.email}
-                onChange={handleChange}
-              />
-            </Form.Item>
             <Form.Item label="City">
               <Input name="city" value={userData.city} onChange={handleChange} />
             </Form.Item>
