@@ -445,7 +445,7 @@ function Admin() {
       <div>.  </div>
       <div>.</div>
       <h5 className="listedmovie" style={{ color: "white" }} >Listed Movies</h5>
-      <Table dataSource={movies} style={{ marginTop: ")px" }} columns={movieColumns} pagination={{ pageSize: 5 }} />
+      <Table dataSource={movies} style={{ marginTop: ")px" }} columns={movieColumns} pagination={{ pageSize: 6 }} />
 
       <Button type="primary" onClick={showModal}>
         Add Movie
