@@ -19,7 +19,7 @@ function Billing() {
   const [quantity4, setQuantity4] = useState(0);
 
   const snackPrice =
-    quantity1 * 700 + quantity2 * 400 + quantity3 * 310 + quantity4 * 500;
+    quantity1 * 350 + quantity2 * 200 + quantity3 * 160 + quantity4 * 250;
 
   useEffect(() => {
     const fetchMovieDetails = async () => {
