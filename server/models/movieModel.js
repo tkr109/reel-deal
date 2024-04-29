@@ -20,6 +20,7 @@ const movieSchema = new mongoose.Schema({
   release_date: {
     type: Date,
     required: true,
+    index: true, 
   },
   media_type: {
     type: String,
@@ -30,15 +31,17 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   director: {
-    type: String, 
+    type: String,
     required: true,
   },
   runtime: {
-    type: Number, 
+    type: Number,
     required: true,
   }
 }, { timestamps: true });
 
-const Movie = mongoose.model("film", movieSchema);
 
+movieSchema.index({ release_date: 1 });
+
+const Movie = mongoose.model("film", movieSchema);
 module.exports = Movie;
