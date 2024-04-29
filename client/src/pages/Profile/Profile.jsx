@@ -17,6 +17,8 @@
     const [bookings, setBookings] = useState([]);
     const [error,setError]=useState(false);
     const userId = JSON.parse(localStorage.getItem("user"))._id;
+    const[totalBooking,SetTotalBooking]=useState(0)
+    const[totalAmount,SetTotalAmount]=useState(0)
 
     useEffect(() => {
       const storedUserData = localStorage.getItem("user");
@@ -25,8 +27,8 @@
         const parsedUserData = JSON.parse(storedUserData);
         setUserData(parsedUserData);
       }
-
-      fetchUserBookings();
+      BookingSummary()
+      UserBookings();
     }, []);
 
     const handleChange = (e) => {
@@ -72,7 +74,7 @@
       }
     };
 
-    const fetchUserBookings = async () => {
+    const UserBookings = async () => {
       try {
         const response = await axios.get(
           `http://localhost:8080/api/v1/bookings/users/bookings/${userId}`
@@ -83,6 +85,22 @@
         console.error("Error fetching user bookings:", error);
       }
     };
+
+    const BookingSummary=async()=>{
+      try{
+        const res=await axios.get("http://localhost:8080/api/v1/bookings/user-booking-summary")
+        const bookings = res.data.filter(booking => booking._id === userId)[0];
+       
+         SetTotalBooking(bookings.total_booking)      
+         SetTotalAmount(bookings.total_booking_amount)
+
+        console.log(total_booking,total_amount)
+      }
+      catch(error)
+      {
+        console.log("Error fetching booking Summary: ",error)
+      }
+    }
 
     return (
       <div className="row py-5 px-4 prof-body">
@@ -129,7 +147,6 @@
                                           type="text"
                                           name="name"
                                           value={userData.name}
-                                          onChange={handleChange}
                                           readOnly
                                         />
                                       </div>
@@ -144,7 +161,6 @@
                                           type="text"
                                           name="phoneNumber"
                                           value={userData.phoneNumber}
-                                          onChange={handleChange}
                                           readOnly
                                         />
                                       </div>
@@ -159,7 +175,6 @@
                                           type="text"
                                           name="email"
                                           value={userData.email}
-                                          onChange={handleChange}
                                           readOnly
                                         />
                                       </div>
@@ -174,7 +189,6 @@
                                           type="text"
                                           name="city"
                                           value={userData.city}
-                                          onChange={handleChange}
                                           readOnly
                                         />
                                       </div>
@@ -228,7 +242,7 @@
             </div>
           </div>
         </div>
-        <History bookings={bookings} />
+        <History bookings={bookings} totalBooking={totalBooking} totalAmount={totalAmount}/>
 
         <Modal
           title="Edit Profile"

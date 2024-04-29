@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import "./history.css";
 
-export const History = ({ bookings }) => {
-  const [count, setCount] = useState("");
-  const [amount, setAmount] = useState("");
-
+export const History = ({ bookings, totalBooking, totalAmount }) => {
   return (
     <div className="">
       <div className="wrapper rounded">
@@ -21,12 +18,12 @@ export const History = ({ bookings }) => {
           }}
         >
           <div className="app__history-booking_div">
-            <p className="app__history-booking_heading">Total Booking</p>
-            <p className="app__history-booking_price">Rs.{count}</p>
+            <p className="app__history-booking_heading">Total Bookings</p>
+            <p className="app__history-booking_price">{totalBooking}</p>
           </div>
           <div className="app__history-booking_div">
             <p className="app__history-booking_heading">Total Amount Spend</p>
-            <p className="app__history-booking_price">Rs.{amount}</p>
+            <p className="app__history-booking_price">Rs. {totalAmount}</p>
           </div>
         </div>
         <div className="table-responsive mt-3">

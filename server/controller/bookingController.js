@@ -4,7 +4,6 @@ const User = require("../models/userModel");
 const createBooking = async (req, res) => {
   const { userId, movieName, date, amount } = req.body;
 
-
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -47,7 +46,27 @@ const getUserBookings = async (req, res) => {
   }
 };
 
+const getUserBookingSummary = async (req, res) => {
+  try {
+    const bookingSummary = await Booking.aggregate([
+      {
+        $group: {
+          _id: "$user", 
+          total_booking: { $sum: 1 }, 
+          total_booking_amount: { $sum: "$amount" },
+        },
+      },
+    ]);
+
+    res.status(200).json(bookingSummary);
+  } catch (error) {
+    console.error("Error getting user booking summary:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 module.exports = {
   createBooking,
   getUserBookings,
+  getUserBookingSummary,
 };
