@@ -470,7 +470,7 @@ function Billing() {
                         </div>
                         <div className="item">
                           <hr style={{ height: "10px" }} />
-                          <h3>Rs.{totalprice + 30 + snackPrice}</h3>
+                          <h3>Rs.{totalprice}</h3>
                         </div>
                       </div>
                     </div>
