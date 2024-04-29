@@ -42,9 +42,22 @@ const Upcoming = () => {
     <div className="carouselSection">
       <ContentWrapper>
         <span className="carouselTitle">Upcoming Movies</span>
-        <p style={{ color: "wheat", backgroundColor: 'black', cursor: 'pointer' }} onClick={handleSortByReleaseDate}>
-          {isSorted ? "Unsort Movies" : "Sort By Release Date"}
-        </p>
+        <div
+          className="app__trending-sorting"
+          onClick={handleSortByReleaseDate}
+        >
+          <p className="app__sorting-text">
+            {isSorted ? "Unsort Movies" : "Sort By Release Date"}
+          </p>
+          <div>
+            <label for="burger" class="burger">
+              <input id="burger" type="checkbox" onClick={handleSortByReleaseDate} checked={isSorted?true:false} />
+              <span></span>
+              <span></span>
+              <span></span>
+            </label>
+          </div>
+        </div>
       </ContentWrapper>
 
       {filteredMovies.length > 0 ? (

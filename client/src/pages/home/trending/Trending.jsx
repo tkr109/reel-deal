@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Carousel from "../../../components/carousel/Carousel";
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
+import "./treanding.css";
 
 const Trending = () => {
   const [movies, setMovies] = useState([]);
@@ -52,16 +53,22 @@ const Trending = () => {
     <div className="carouselSection">
       <ContentWrapper>
         <span className="carouselTitle">Trending Movies</span>
-        <p
-          style={{
-            color: "wheat",
-            backgroundColor: "black",
-            cursor: "pointer",
-          }}
+        <div
+          className="app__trending-sorting"
           onClick={handleSortByReleaseDate}
         >
-          {isSorted ? "Unsort Movies" : "Sort By Release Date"}
-        </p>
+          <p className="app__sorting-text">
+            {isSorted ? "Unsort Movies" : "Sort By Release Date"}
+          </p>
+          <div>
+            <label for="burger" class="burger">
+              <input id="burger" type="checkbox" onClick={handleSortByReleaseDate} checked={isSorted?true:false} />
+              <span></span>
+              <span></span>
+              <span></span>
+            </label>
+          </div>
+        </div>
       </ContentWrapper>
       <Carousel data={filteredMovies} />
     </div>
