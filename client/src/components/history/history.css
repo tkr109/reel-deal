@@ -61,17 +61,19 @@ body {
     display: flex;
     width: 90%;
     align-items: center;
-    justify-content:space-evenly;
+justify-content: center;
+    padding: 0 8rem;
 }
 
 .app__history-booking_heading{
-    width: 50%;
+    /* width: 50%; */
     font-family: 'poppins';
     font-weight: 400;
 }
 
 .app__history-booking_price{
     font-weight: 400;
+    margin-left: 1rem;
 }
 
 
