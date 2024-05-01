@@ -1,0 +1,80 @@
+.burger {
+    position: relative;
+    width: 20px;
+    height: 10px;
+    background: transparent;
+    cursor: pointer;
+    display: block;
+}
+
+.burger input {
+    display: none;
+}
+
+.burger span {
+    display: block;
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: white;
+    border-radius: 9px;
+    opacity: 1;
+    left: 0;
+    transform: rotate(0deg);
+    transition: .25s ease-in-out;
+}
+
+.burger span:nth-of-type(1) {
+    top: 0px;
+    transform-origin: left center;
+}
+
+.burger span:nth-of-type(2) {
+    top: 50%;
+    transform: translateY(-50%);
+    transform-origin: left center;
+}
+
+.burger span:nth-of-type(3) {
+    top: 100%;
+    transform-origin: left center;
+    transform: translateY(-50%);
+}
+
+.burger input:checked~span:nth-of-type(1) {
+    top: -4px;
+    left: 5px;
+    transform: rotate(405deg);
+}
+
+.burger input:checked~span:nth-of-type(2) {
+    width: 0%;
+    opacity: 0;
+}
+
+.burger input:checked~span:nth-of-type(3) {
+    top: 11px;
+    left: 2px;
+    transform: rotate(-405deg);
+}
+
+.app__trending-sorting {
+    transition: 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+    justify-items: center;
+    
+}
+
+.app__sorting-text {
+    margin-right: 2rem;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    margin-bottom: 0;
+}

@@ -51,9 +51,19 @@ const getMovies = async (req, res) => {
   }
 };
 
+const getMoviesSorted = async (req, res) => {
+  try {
+    const movies = await Movie.find().sort({ release_date: 1 });
+    res.json(movies);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+
 const getMovieById = async (req, res) => {
   try {
-    const movieId = req.params.id; // Assuming you pass the movie ID in the URL
+    const movieId = req.params.id; 
     const movie = await Movie.findById(movieId);
 
     if (!movie) {
@@ -68,7 +78,7 @@ const getMovieById = async (req, res) => {
 
 const deleteMovie = async (req, res) => {
   try {
-    const movieId = req.params.id; // Assuming you pass the movie ID in the URL
+    const movieId = req.params.id; 
     const deletedMovie = await Movie.findByIdAndDelete(movieId);
 
     if (!deletedMovie) {
@@ -86,4 +96,5 @@ module.exports = {
   getMovies,
   getMovieById,
   deleteMovie,
+  getMoviesSorted
 };

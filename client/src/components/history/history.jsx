@@ -1,26 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import "./history.css";
 
-export const History = ({ bookings }) => {
+export const History = ({ bookings, totalBooking, totalAmount }) => {
   return (
     <div className="">
       <div className="wrapper rounded">
         <nav className="navbar navbar-expand-lg navbar-dark dark d-lg-flex align-items-center justify-content-center">
-          <a className="navbar-brand" href="#">
+          <p className="navbar-brand" href="#">
             History
-          </a>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
+          </p>
         </nav>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div className="app__history-booking_div">
+            <p className="app__history-booking_heading">Total Bookings :   </p>
+            <p className="app__history-booking_price">{totalBooking}</p>
+          </div>
+          <div className="app__history-booking_div">
+            <p className="app__history-booking_heading">Total Amount Spend :    </p>
+            <p className="app__history-booking_price">Rs. {totalAmount}</p>
+          </div>
+        </div>
         <div className="table-responsive mt-3">
           {bookings.length > 0 ? (
             <table className="table table-dark table-borderless">
