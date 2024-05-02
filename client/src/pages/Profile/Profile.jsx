@@ -244,6 +244,7 @@
         </div>
         <History bookings={bookings} totalBooking={totalBooking} totalAmount={totalAmount}/>
 
+        {/* Modal */}
         <Modal
           title="Edit Profile"
           visible={showModal}
@@ -257,7 +258,6 @@
             </Button>,
           ]}
         >
-          {/* Modal */}
           <Form layout="vertical">
             <Form.Item label="Name">
               <Input name="name" value={userData.name} onChange={handleChange} />

@@ -16,6 +16,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import axios from "axios";
 import moment from "moment";
 import './Admin.css'
+import { useNavigate } from "react-router-dom";
 
 function Admin() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -25,8 +26,12 @@ function Admin() {
   const [theaters, setTheaters] = useState([]);
   const [theaterModalVisible, setTheaterModalVisible] = useState(false);
   const [selectedTimings, setSelectedTimings] = useState([]);
-
+  const navigate=useNavigate()
   const today = new Date();
+
+  const isAdmin=JSON.parse(localStorage.getItem("user")).isAdmin
+
+  console.log("Hiiiiiiiiiiiiiii",isAdmin)
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -100,6 +105,7 @@ function Admin() {
   };
 
   useEffect(() => {
+    if(!isAdmin) {navigate('/profile')}
     axios
       .get("http://localhost:8080/api/v1/movies/get-movies")
       .then((response) => {
