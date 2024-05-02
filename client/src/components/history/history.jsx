@@ -18,11 +18,11 @@ export const History = ({ bookings, totalBooking, totalAmount }) => {
           }}
         >
           <div className="app__history-booking_div">
-            <p className="app__history-booking_heading">Total Bookings</p>
+            <p className="app__history-booking_heading">Total Bookings :   </p>
             <p className="app__history-booking_price">{totalBooking}</p>
           </div>
           <div className="app__history-booking_div">
-            <p className="app__history-booking_heading">Total Amount Spend</p>
+            <p className="app__history-booking_heading">Total Amount Spend :    </p>
             <p className="app__history-booking_price">Rs. {totalAmount}</p>
           </div>
         </div>
