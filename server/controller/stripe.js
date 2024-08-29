@@ -1,7 +1,8 @@
-const stripe = require("stripe")("sk_test_51NZsJHSFP0q9Yrdk9dNtFIFnhceN3IPBfpU617aKK8ukdzZ1jUx3HL3otBY0rXwy00IAom16A8FRlZ9z8weNSdnV00BWIhfPec");
+const dotenv=require('dotenv')
+const stripe = require("stripe")(process.env.STRIPE_KEY);
 
 const handlePayment = async (req, res) => {
-    const product = req.body.products; // Assuming the product is nested under the 'products' key
+    const product = req.body.products; 
 
     const lineItems = [{
         price_data: {
@@ -10,9 +11,9 @@ const handlePayment = async (req, res) => {
                 name: product.title,
                 images: [product.poster_path],
             },
-            unit_amount: product.price * 100, // Adjust this according to your needs
+            unit_amount: product.price * 100, 
         },
-        quantity: 1, // Assuming you want to purchase one item, adjust as needed
+        quantity: 1, 
     }];
 
     const session = await stripe.checkout.sessions.create({
