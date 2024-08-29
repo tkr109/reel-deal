@@ -5,6 +5,7 @@ import Carousel from "../../../components/carousel/Carousel";
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 import SwitchTabs from "../../../components/switchTabs/SwitchTabs";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../../components/helper";
 
 const Popular = () => {
     const [endpoint, setEndpoint] = useState("movie");
@@ -14,7 +15,7 @@ const Popular = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/v1/shows/get-shows`); // Use your API endpoint URL
+                const response = await axios.get(`${BASE_URL}api/v1/shows/get-shows`); // Use your API endpoint URL
                 setData(response.data);
                 setLoading(false);
             } catch (error) {

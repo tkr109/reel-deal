@@ -3,10 +3,9 @@ import Button from "../../components/Button/button";
 import { Form, Input, Row, Col, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import image from "../../assets/hero.jpg"
-
 import axios from "axios";
-
-import "../Login/login.css"; // Import the CSS file with your styles
+import "../Login/login.css"; 
+import { BASE_URL } from "../../components/helper";
 
 function Register() {
   const [errorMsg,setErrorMsg]=useState("")
@@ -16,7 +15,7 @@ function Register() {
     try {
       console.log(values);
       setLoading(true);
-      await axios.post('http://localhost:8080/api/v1/users/register/', values);
+      await axios.post(`${BASE_URL}api/v1/users/register/`, values);
       message.success("Registration Done");
       navigate('/login');
       setLoading(false);

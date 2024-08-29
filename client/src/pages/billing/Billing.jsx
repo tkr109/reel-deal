@@ -6,6 +6,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { faMoneyCheck } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
+import { BASE_URL } from "../../components/helper";
 
 function Billing() {
   const { id, theatreName, timing, date, price, seats } = useParams();
@@ -25,7 +26,7 @@ function Billing() {
     const fetchMovieDetails = async () => {
       try {
         const response = await fetch( 
-          `http://localhost:8080/api/v1/movies/get-movie/${id}`
+          `${BASE_URL}api/v1/movies/get-movie/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch movie details.");
@@ -41,7 +42,7 @@ function Billing() {
     const getShow = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/shows/get-show/${id}`
+          `${BASE_URL}api/v1/shows/get-show/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch show details.");
@@ -84,7 +85,7 @@ function Billing() {
       "Content-Type": "application/json",
     };
     const response = await fetch(
-      "http://localhost:8080/api/v1/payment/create-checkout-session",
+      `${BASE_URL}api/v1/payment/create-checkout-session`,
       {
         method: "POST",
         headers: headers,
@@ -117,7 +118,7 @@ function Billing() {
       console.log("Booking Data:", bookingData);
 
       const response = await axios.post(
-        "http://localhost:8080/api/v1/bookings/add-bookings",
+        `${BASE_URL}api/v1/bookings/add-bookings`,
         bookingData,
         {
           headers: {

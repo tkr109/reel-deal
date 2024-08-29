@@ -17,6 +17,7 @@ import axios from "axios";
 import moment from "moment";
 import './Admin.css'
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../components/helper";
 
 function Admin() {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -54,7 +55,7 @@ function Admin() {
 
     // Make a DELETE request to your server to delete the show
     axios
-      .delete(`http://localhost:8080/api/v1/shows/delete-show/${record._id}`)
+      .delete(`${BASE_URL}api/v1/shows/delete-show/${record._id}`)
       .then((response) => {
         message.success("Show Deleted Successfully");
 
@@ -70,7 +71,7 @@ function Admin() {
   const onShowFormFinish = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/shows/create-show/",
+        `${BASE_URL}api/v1/shows/create-show/`,
         values
       );
       message.success("Show Added Successfully");
@@ -91,7 +92,7 @@ function Admin() {
 
     // Make a DELETE request to your server to delete the movie
     axios
-      .delete(`http://localhost:8080/api/v1/movies/delete-movie/${record._id}`)
+      .delete(`${BASE_URL}api/v1/movies/delete-movie/${record._id}`)
       .then((response) => {
         message.success("Movie Deleted Successfully");
 
@@ -107,7 +108,7 @@ function Admin() {
   useEffect(() => {
     if(!isAdmin) {navigate('/profile')}
     axios
-      .get("http://localhost:8080/api/v1/movies/get-movies")
+      .get(`${BASE_URL}api/v1/movies/get-movies`)
       .then((response) => {
         setMovies(response.data);
       })
@@ -116,7 +117,7 @@ function Admin() {
       });
 
     axios
-      .get("http://localhost:8080/api/v1/shows/get-shows")
+      .get("${BASE_URL}api/v1/shows/get-shows")
       .then((response) => {
         setShows(response.data);
       })
@@ -125,7 +126,7 @@ function Admin() {
       });
 
     axios
-      .get("http://localhost:8080/api/v1/theaters/get-theaters")
+      .get(`${BASE_URL}api/v1/theaters/get-theaters`)
       .then((response) => {
         console.log(response);
         setTheaters(response.data);
@@ -139,7 +140,7 @@ function Admin() {
     console.log(values);
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/movies/add-movies",
+        `${BASE_URL}api/v1/movies/add-movies`,
 
         {
           poster_path: values.poster_path,
@@ -180,7 +181,7 @@ function Admin() {
   const handleAddTheater = async (values) => {
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/v1/theaters/add-theater",
+        `${BASE_URL}api/v1/theaters/add-theater`,
         values
       );
 
@@ -189,7 +190,7 @@ function Admin() {
       if (values.movieIds && values.movieIds.length > 0) {
         for (const movieId of values.movieIds) {
           await axios.post(
-            `http://localhost:8080/api/v1/theaters/add-movie-to-theater/${newTheater._id}`,
+            `${BASE_URL}api/v1/theaters/add-movie-to-theater/${newTheater._id}`,
             { movieId }
           );
         }
@@ -215,7 +216,7 @@ function Admin() {
     // Make a DELETE request to your server to delete the theater
     axios
       .delete(
-        `http://localhost:8080/api/v1/theaters/delete-theater/${record._id}`
+        `${BASE_URL}api/v1/theaters/delete-theater/${record._id}`
       )
       .then((response) => {
         message.success("Theater Deleted Successfully");

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Carousel from "../../../components/carousel/Carousel";
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
+import { BASE_URL } from "../../../components/helper";
 
 const Upcoming = () => {
   const [movies, setMovies] = useState([]);
@@ -9,7 +10,7 @@ const Upcoming = () => {
 
   const fetchMovies = () => {
     axios
-      .get("http://localhost:8080/api/v1/movies/get-movies")
+      .get(`${BASE_URL}api/v1/movies/get-movies`)
       .then((response) => {
         setMovies(response.data);
       })

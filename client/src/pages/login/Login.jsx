@@ -5,7 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import image from "../../assets/hero.jpg";
 
-import "./login.css"; // Import the CSS file with your styles
+import "./login.css"; 
+import { BASE_URL } from "../../components/helper";
 
 function Login() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function Login() {
     
     try {
       setLoading(true);
-      const { data } = await axios.post("http://localhost:8080/api/v1/users/login", values);
+      const { data } = await axios.post(`${BASE_URL}api/v1/users/login`, values);
       setLoading(false);
       message.success("Login Successful");
       localStorage.setItem("user", JSON.stringify({ ...data.user, password: "" }));

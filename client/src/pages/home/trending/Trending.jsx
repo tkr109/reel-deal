@@ -3,6 +3,7 @@ import axios from "axios";
 import Carousel from "../../../components/carousel/Carousel";
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 import "./treanding.css";
+import { BASE_URL } from "../../../components/helper";
 
 const Trending = () => {
   const [movies, setMovies] = useState([]);
@@ -10,9 +11,10 @@ const Trending = () => {
 
   const fetchMovies = () => {
     axios
-      .get("http://localhost:8080/api/v1/movies/get-movies")
+      .get(`${BASE_URL}api/v1/movies/get-movies`)
       .then((response) => {
         setMovies(response.data);
+        console.log(response.data)
       })
       .catch((error) => {
         console.error("Error fetching movies:", error);
@@ -21,7 +23,7 @@ const Trending = () => {
 
   const fetchMoviesSorted = () => {
     axios
-      .get("http://localhost:8080/api/v1/movies/get-movies-sorted")
+      .get(`${BASE_URL}api/v1/movies/get-movies-sorted`)
       .then((response) => {
         setMovies(response.data);
         setIsSorted(true);

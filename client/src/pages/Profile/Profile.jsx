@@ -4,6 +4,7 @@
   import { Modal, Form, Input, Button, Alert } from "antd";
   import "./profile.css";
   import axios from "axios";
+import { BASE_URL } from "../../components/helper";
 
   const Profile = () => {
     const [userData, setUserData] = useState({
@@ -60,7 +61,7 @@
                 return;
               }
         const response = await axios.put(
-          `http://localhost:8080/api/v1/users/update/${userId}`,
+          `${BASE_URL}api/v1/users/update/${userId}`,
           updatedUserData
         );
 
@@ -77,7 +78,7 @@
     const UserBookings = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/v1/bookings/users/bookings/${userId}`
+          `${BASE_URL}api/v1/bookings/users/bookings/${userId}`
         );
 
         setBookings(response.data.bookings);
@@ -88,7 +89,7 @@
 
     const BookingSummary=async()=>{
       try{
-        const res=await axios.get("http://localhost:8080/api/v1/bookings/user-booking-summary")
+        const res=await axios.get(`${BASE_URL}api/v1/bookings/user-booking-summary`)
         const bookings = res.data.filter(booking => booking._id === userId)[0];
        
          SetTotalBooking(bookings.total_booking)      

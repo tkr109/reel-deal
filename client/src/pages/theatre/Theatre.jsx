@@ -13,6 +13,7 @@
   import "./theatre.css";
   import axios from "axios";
   import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../components/helper";
 
   // Mixin functions
   const sm = (styles) => css`
@@ -262,7 +263,7 @@
     const getMovie = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/movies/get-movie/${id}`
+          `${BASE_URL}api/v1/movies/get-movie/${id}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch movie details.");
@@ -284,7 +285,7 @@
 
         axios
           .get(
-            `http://localhost:8080/api/v1/theaters/get-theaters-for-movie/${id}`
+            `${BASE_URL}api/v1/theaters/get-theaters-for-movie/${id}`
           )
           .then((response) => {
             // Filter theaters based on matching city

@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { PlayIcon } from "./Playbtn";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTicket } from '@fortawesome/free-solid-svg-icons';
+import { BASE_URL } from "../../components/helper";
 
 // Mixin functions
 const sm = (styles) => css`
@@ -265,7 +266,7 @@ const ShowDetails = () => {
   const getShow = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/shows/get-show/${id}`
+        `${BASE_URL}api/v1/shows/get-show/${id}`
       );
       if (!response.ok) {
         throw new Error("Failed to fetch show details.");
